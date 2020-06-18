@@ -1,0 +1,1519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.1.1 (Python 3.6.8 on linux)" generated="20190531 11:03:01.960" rpa="false">
+<suite id="s1" name="Governance" source="/testing/Governance.robot">
+<kw name="Create Sessions" type="setup">
+<kw name="Create Mock Session" library="MockServerLibrary">
+<doc>Creates an HTTP session towards mockserver.</doc>
+<arguments>
+<arg>${MOCK_URL}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:02.364" endtime="20190531 11:03:02.364"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>10s</arg>
+</arguments>
+<msg timestamp="20190531 11:03:12.366" level="INFO">Slept 10 seconds</msg>
+<status status="PASS" starttime="20190531 11:03:02.365" endtime="20190531 11:03:12.367"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:02.363" endtime="20190531 11:03:12.367"></status>
+</kw>
+<test id="s1-t1" name="Get Response from onboardingauth for token verification">
+<kw name="Set Variable" library="BuiltIn">
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<arguments>
+<arg>/node/jwt/verify</arg>
+</arguments>
+<assign>
+<var>${ENDPOINT}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.372" level="INFO">${ENDPOINT} = /node/jwt/verify</msg>
+<status status="PASS" starttime="20190531 11:03:12.371" endtime="20190531 11:03:12.372"></status>
+</kw>
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-type=application/json</arg>
+</arguments>
+<assign>
+<var>${HEADERS}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.377" level="INFO">${HEADERS} = {'Content-type': 'application/json'}</msg>
+<status status="PASS" starttime="20190531 11:03:12.374" endtime="20190531 11:03:12.377"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.load(open("verifyJWTTOKEN.json", "r"))</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${resbody}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.399" level="INFO">${resbody} = {'status': {'error': False, 'code': 200, 'type': 'Success', 'message': 'JWT Verified successfully'}, 'data': {'status': True, 'data': {'authId': 399, 'userId': 285, 'type': 'jwt2', 'iat': 1554479350, ...</msg>
+<status status="PASS" starttime="20190531 11:03:12.378" endtime="20190531 11:03:12.399"></status>
+</kw>
+<kw name="Verify Token GET With Body">
+<arguments>
+<arg>${ENDPOINT}</arg>
+<arg>${HEADERS}</arg>
+<arg>${resbody}</arg>
+</arguments>
+<kw name="Create Mock Request Matcher" library="MockServerLibrary">
+<doc>Creates a mock request matcher to be used by mockserver.</doc>
+<arguments>
+<arg>GET</arg>
+<arg>${ENDPOINT}</arg>
+</arguments>
+<assign>
+<var>&amp;{req}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.401" level="INFO">&amp;{req} = { method=GET | path=/node/jwt/verify }</msg>
+<status status="PASS" starttime="20190531 11:03:12.400" endtime="20190531 11:03:12.401"></status>
+</kw>
+<kw name="Create Mock Response" library="MockServerLibrary">
+<doc>Creates a mock response to be used by mockserver.</doc>
+<arguments>
+<arg>status_code=200</arg>
+<arg>headers=${HEADERS}</arg>
+<arg>body=${resbody}</arg>
+</arguments>
+<assign>
+<var>&amp;{rsp}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.403" level="INFO">&amp;{rsp} = { statusCode=200 | headers=[{'name': 'Content-type', 'values': ['application/json']}] | body={"status": {"error": false, "code": 200, "type": "Success", "message": "JWT Verified successfully"}, "data"...</msg>
+<status status="PASS" starttime="20190531 11:03:12.401" endtime="20190531 11:03:12.404"></status>
+</kw>
+<kw name="Create Mock Expectation" library="MockServerLibrary">
+<doc>Creates a mock expectation to be used by mockserver.</doc>
+<arguments>
+<arg>${req}</arg>
+<arg>${rsp}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:12.405" endtime="20190531 11:03:12.775"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.399" endtime="20190531 11:03:12.775"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.368" endtime="20190531 11:03:12.775" critical="yes"></status>
+</test>
+<test id="s1-t2" name="Create proposal">
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.779" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:12.778" endtime="20190531 11:03:12.779"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:12.780" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:12.779" endtime="20190531 11:03:12.781"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.778" endtime="20190531 11:03:12.781"></status>
+</kw>
+<kw name="Get Input Data">
+<arguments>
+<arg>proposal.json</arg>
+</arguments>
+<assign>
+<var>${object}</var>
+</assign>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.load(open("${file}", "r"))</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${object}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.791" level="INFO">${object} = {'proposalName': 'proposal_new_4', 'proposalDescription': 'proposal_new_1 Description', 'proposalBlockExpiration': 91234568, 'sukuReward': 895555, 'choices': [{'name': 'proposal_new_1', 'description':...</msg>
+<status status="PASS" starttime="20190531 11:03:12.781" endtime="20190531 11:03:12.791"></status>
+</kw>
+<msg timestamp="20190531 11:03:12.792" level="INFO">${object} = {'proposalName': 'proposal_new_4', 'proposalDescription': 'proposal_new_1 Description', 'proposalBlockExpiration': 91234568, 'sukuReward': 895555, 'choices': [{'name': 'proposal_new_1', 'description':...</msg>
+<status status="PASS" starttime="20190531 11:03:12.781" endtime="20190531 11:03:12.792"></status>
+</kw>
+<kw name="Api call for creating proposal">
+<arguments>
+<arg>${object}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>governance</arg>
+<arg>/proposals/</arg>
+<arg>data=${object}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.927" level="INFO">Post Request using : alias=governance, uri=/proposals/, data=&lt;empty&gt;, headers=None, files=None, allow_redirects=True </msg>
+<msg timestamp="20190531 11:03:12.928" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:12.793" endtime="20190531 11:03:12.928"></status>
+</kw>
+<msg timestamp="20190531 11:03:12.928" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:12.792" endtime="20190531 11:03:12.928"></status>
+</kw>
+<kw name="Checking response for Create proposal">
+<arguments>
+<arg>${object}</arg>
+<arg>${result}</arg>
+</arguments>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["error"]} == ${false}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:12.931" endtime="20190531 11:03:12.932"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.929" endtime="20190531 11:03:12.932"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["code"]} == ${200}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:12.933" endtime="20190531 11:03:12.934"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.932" endtime="20190531 11:03:12.934"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["type"]}" == "OK"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:12.935" endtime="20190531 11:03:12.936"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.934" endtime="20190531 11:03:12.936"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["message"]}" == "Success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:12.937" endtime="20190531 11:03:12.937"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.936" endtime="20190531 11:03:12.937"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["keyword"]}" == "proposal-submit-success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:12.938" endtime="20190531 11:03:12.939"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.937" endtime="20190531 11:03:12.939"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["data"]["proposalId"]}" == "${object["proposalName"]}"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:12.939" endtime="20190531 11:03:12.940"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.929" endtime="20190531 11:03:12.940"></status>
+</kw>
+<tags>
+<tag>Positive</tag>
+</tags>
+<status status="PASS" starttime="20190531 11:03:12.776" endtime="20190531 11:03:12.940" critical="yes"></status>
+</test>
+<test id="s1-t3" name="Create proposal with invalid data">
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.945" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:12.945" endtime="20190531 11:03:12.945"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:12.946" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:12.946" endtime="20190531 11:03:12.947"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:12.944" endtime="20190531 11:03:12.947"></status>
+</kw>
+<kw name="Get Input Data">
+<arguments>
+<arg>invalidproposal.json</arg>
+</arguments>
+<assign>
+<var>${object}</var>
+</assign>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.load(open("${file}", "r"))</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${object}</var>
+</assign>
+<msg timestamp="20190531 11:03:12.955" level="INFO">${object} = {}</msg>
+<status status="PASS" starttime="20190531 11:03:12.948" endtime="20190531 11:03:12.956"></status>
+</kw>
+<msg timestamp="20190531 11:03:12.956" level="INFO">${object} = {}</msg>
+<status status="PASS" starttime="20190531 11:03:12.947" endtime="20190531 11:03:12.956"></status>
+</kw>
+<kw name="Api call for creating proposal">
+<arguments>
+<arg>${object}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>governance</arg>
+<arg>/proposals/</arg>
+<arg>data=${object}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20190531 11:03:13.054" level="INFO">Post Request using : alias=governance, uri=/proposals/, data=&lt;empty&gt;, headers=None, files=None, allow_redirects=True </msg>
+<msg timestamp="20190531 11:03:13.056" level="INFO">${result} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:12.957" endtime="20190531 11:03:13.056"></status>
+</kw>
+<msg timestamp="20190531 11:03:13.056" level="INFO">${result} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:12.956" endtime="20190531 11:03:13.056"></status>
+</kw>
+<kw name="Checking response for Create proposal for invalid data">
+<arguments>
+<arg>${result}</arg>
+</arguments>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["error"]} == ${true}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.058" endtime="20190531 11:03:13.059"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.057" endtime="20190531 11:03:13.059"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["code"]} == ${400}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.061" endtime="20190531 11:03:13.062"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.060" endtime="20190531 11:03:13.062"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["type"]}" == "Bad Request"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.063" endtime="20190531 11:03:13.064"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.063" endtime="20190531 11:03:13.064"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["message"]}" == "Provided request input is not valid"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.066" endtime="20190531 11:03:13.066"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.065" endtime="20190531 11:03:13.067"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["keyword"]}" == "invalid-request"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${400}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.067" endtime="20190531 11:03:13.068"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.067" endtime="20190531 11:03:13.068"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.057" endtime="20190531 11:03:13.068"></status>
+</kw>
+<tags>
+<tag>Negetive</tag>
+</tags>
+<status status="PASS" starttime="20190531 11:03:12.942" endtime="20190531 11:03:13.068" critical="yes"></status>
+</test>
+<test id="s1-t4" name="To get all proposals">
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:13.073" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:13.071" endtime="20190531 11:03:13.073"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:13.073" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:13.073" endtime="20190531 11:03:13.074"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.071" endtime="20190531 11:03:13.074"></status>
+</kw>
+<kw name="Api call for getting proposals">
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>governance</arg>
+<arg>/proposals?status=unexpired&amp;limit=2</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20190531 11:03:13.490" level="INFO">Get Request using : alias=governance, uri=/proposals?status=unexpired&amp;limit=2, headers=None json=None</msg>
+<msg timestamp="20190531 11:03:13.492" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:13.075" endtime="20190531 11:03:13.493"></status>
+</kw>
+<msg timestamp="20190531 11:03:13.496" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:13.074" endtime="20190531 11:03:13.497"></status>
+</kw>
+<kw name="Checking response for getting proposals">
+<arguments>
+<arg>${result}</arg>
+</arguments>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["error"]} == ${false}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.501" endtime="20190531 11:03:13.502"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.500" endtime="20190531 11:03:13.502"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["code"]} == ${200}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.504" endtime="20190531 11:03:13.504"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.503" endtime="20190531 11:03:13.505"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["type"]}" == "OK"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.506" endtime="20190531 11:03:13.506"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.505" endtime="20190531 11:03:13.506"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["message"]}" == "Success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.507" endtime="20190531 11:03:13.508"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.507" endtime="20190531 11:03:13.508"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["keyword"]}" == "proposals-fetch-success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.510" endtime="20190531 11:03:13.511"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.509" endtime="20190531 11:03:13.511"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.498" endtime="20190531 11:03:13.511"></status>
+</kw>
+<tags>
+<tag>Positive</tag>
+</tags>
+<status status="PASS" starttime="20190531 11:03:13.070" endtime="20190531 11:03:13.511" critical="yes"></status>
+</test>
+<test id="s1-t5" name="To retrive a proposal">
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:13.516" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:13.515" endtime="20190531 11:03:13.516"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:13.516" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:13.516" endtime="20190531 11:03:13.517"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.514" endtime="20190531 11:03:13.517"></status>
+</kw>
+<kw name="Get proposal id">
+<assign>
+<var>${proid}</var>
+</assign>
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:13.520" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:13.519" endtime="20190531 11:03:13.520"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:13.521" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:13.520" endtime="20190531 11:03:13.521"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.518" endtime="20190531 11:03:13.522"></status>
+</kw>
+<kw name="Get Input Data">
+<arguments>
+<arg>proposal.json</arg>
+</arguments>
+<assign>
+<var>${object}</var>
+</assign>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.load(open("${file}", "r"))</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${object}</var>
+</assign>
+<msg timestamp="20190531 11:03:13.529" level="INFO">${object} = {'proposalName': 'proposal_new_4', 'proposalDescription': 'proposal_new_1 Description', 'proposalBlockExpiration': 91234568, 'sukuReward': 895555, 'choices': [{'name': 'proposal_new_1', 'description':...</msg>
+<status status="PASS" starttime="20190531 11:03:13.522" endtime="20190531 11:03:13.530"></status>
+</kw>
+<msg timestamp="20190531 11:03:13.531" level="INFO">${object} = {'proposalName': 'proposal_new_4', 'proposalDescription': 'proposal_new_1 Description', 'proposalBlockExpiration': 91234568, 'sukuReward': 895555, 'choices': [{'name': 'proposal_new_1', 'description':...</msg>
+<status status="PASS" starttime="20190531 11:03:13.522" endtime="20190531 11:03:13.531"></status>
+</kw>
+<kw name="Api call for creating proposal">
+<arguments>
+<arg>${object}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Post Request" library="RequestsLibrary">
+<doc>Send a POST request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>governance</arg>
+<arg>/proposals/</arg>
+<arg>data=${object}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20190531 11:03:13.630" level="INFO">Post Request using : alias=governance, uri=/proposals/, data=&lt;empty&gt;, headers=None, files=None, allow_redirects=True </msg>
+<msg timestamp="20190531 11:03:13.630" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:13.533" endtime="20190531 11:03:13.631"></status>
+</kw>
+<msg timestamp="20190531 11:03:13.631" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:13.532" endtime="20190531 11:03:13.631"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${result.json()}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:13.632" level="INFO">{'status': {'error': False, 'code': 200, 'type': 'OK', 'message': 'Success', 'keyword': 'proposal-submit-success'}, 'data': {'proposalId': 'd5a7dc02-a1bd-e3a2-c2ed-69e30d5ae02a', 'proposalName': 'proposal_new_4'}}</msg>
+<status status="PASS" starttime="20190531 11:03:13.631" endtime="20190531 11:03:13.632"></status>
+</kw>
+<msg timestamp="20190531 11:03:13.633" level="INFO">${proid} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:13.518" endtime="20190531 11:03:13.633"></status>
+</kw>
+<kw name="Api call for retriving individual proposal">
+<arguments>
+<arg>${proid}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${proid.json()}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:13.634" level="INFO">{'status': {'error': False, 'code': 200, 'type': 'OK', 'message': 'Success', 'keyword': 'proposal-submit-success'}, 'data': {'proposalId': 'd5a7dc02-a1bd-e3a2-c2ed-69e30d5ae02a', 'proposalName': 'proposal_new_4'}}</msg>
+<status status="PASS" starttime="20190531 11:03:13.634" endtime="20190531 11:03:13.634"></status>
+</kw>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>governance</arg>
+<arg>/proposals/${proid.json()["data"]["proposalId"]}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20190531 11:03:13.960" level="INFO">Get Request using : alias=governance, uri=/proposals/d5a7dc02-a1bd-e3a2-c2ed-69e30d5ae02a, headers=None json=None</msg>
+<msg timestamp="20190531 11:03:13.961" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:13.635" endtime="20190531 11:03:13.961"></status>
+</kw>
+<msg timestamp="20190531 11:03:13.961" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:13.633" endtime="20190531 11:03:13.962"></status>
+</kw>
+<kw name="Checking response for retriving proposals">
+<arguments>
+<arg>${result}</arg>
+</arguments>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${result.json()}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:13.964" level="INFO">{'status': {'error': False, 'code': 200, 'type': 'OK', 'message': 'Success', 'keyword': 'proposal-fetch-success'}, 'data': {'blockHeight': 5704215, 'proposal': {'expired': False, 'proposalId': 'd5a7dc02-a1bd-e3a2-c2ed-69e30d5ae02a', 'title': 'proposal_new_4', 'author': '', 'body': 'proposal_new_1 Description', 'blockExpiration': 91234568, 'choices': [{'choiceId': '323857d9-ae5a-0af6-6200-b500e0e4c6f6', 'name': 'proposal_new_1', 'description': 'proposal_new_1 description', 'sukuIncentice': 0, 'additionalInformation': '', 'teamMembers': [{'_id': '5cf109f10d735700138f500f', 'name': 'proposal_new_1 team', 'title': 'proposal_new_1 title', 'img': {'data': 'QnVmZmVy', 'contentType': 'String'}, 'links': {'linkedin': 'String', 'telegram': 'String', 'slack': 'String', 'github': 'String', 'twitter': 'String'}}, {'_id': '5cf109f10d735700138f500e', 'name': 'proposal_new_2 team', 'title': 'proposal_new_2 title', 'img': {'data': 'QnVmZmVy', 'contentType': 'String'}, 'links': {'linkedin': 'String', 'telegram': 'String', 'slack': 'String', 'github': 'String', 'twitter': 'String'}}]}, {'choiceId': 'cb970930-2cf0-db42-cb98-7d659ca9ff4f', 'name': 'proposal_new_2', 'description': 'proposal_new_2 description', 'sukuIncentice': 0, 'additionalInformation': '', 'teamMembers': [{'_id': '5cf109f10d735700138f500c', 'name': 'proposal_new_2 team1', 'title': 'proposal_new_2 title1', 'img': {'data': 'QnVmZmVy', 'contentType': 'String'}, 'links': {'linkedin': 'String', 'telegram': 'String', 'slack': 'String', 'github': 'String', 'twitter': 'String'}}, {'_id': '5cf109f10d735700138f500b', 'name': 'proposal_new_2 team2', 'title': 'proposal_new_2 title2', 'img': {'data': 'QnVmZmVy', 'contentType': 'String'}, 'links': {'linkedin': 'String', 'telegram': 'String', 'slack': 'String', 'github': 'String', 'twitter': 'String'}}]}, {'choiceId': '0f1a75f7-d460-4003-4297-4b0ca3c026a5', 'name': 'proposal_new_3', 'description': 'proposal_new_3 description', 'sukuIncentice': 0, 'additionalInformation': '', 'teamMembers': [{'_id': '5cf109f10d735700138f5009', 'name': 'proposal_new_3 team1', 'title': 'proposal_new_3 title1', 'img': {'data': 'QnVmZmVy', 'contentType': 'String'}, 'links': {'linkedin': 'String', 'telegram': 'String', 'slack': 'String', 'github': 'String', 'twitter': 'String'}}, {'_id': '5cf109f10d735700138f5008', 'name': 'proposal_new_3 team2', 'title': 'proposal_new_3 title2', 'img': {'data': 'QnVmZmVy', 'contentType': 'String'}, 'links': {'linkedin': 'String', 'telegram': 'String', 'slack': 'String', 'github': 'String', 'twitter': 'String'}}]}], 'dateCreated': '2019-05-31T11:03:13.619Z', 'votes': []}}}</msg>
+<status status="PASS" starttime="20190531 11:03:13.963" endtime="20190531 11:03:13.964"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["error"]} == ${false}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.966" endtime="20190531 11:03:13.967"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.965" endtime="20190531 11:03:13.968"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["code"]} == ${200}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.969" endtime="20190531 11:03:13.970"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.968" endtime="20190531 11:03:13.970"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["type"]}" == "OK"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.972" endtime="20190531 11:03:13.972"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.970" endtime="20190531 11:03:13.972"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["message"]}" == "Success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.973" endtime="20190531 11:03:13.974"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.973" endtime="20190531 11:03:13.974"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["keyword"]}" == "proposals-fetch-success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:13.974" endtime="20190531 11:03:13.975"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.962" endtime="20190531 11:03:13.975"></status>
+</kw>
+<tags>
+<tag>Positive</tag>
+</tags>
+<status status="PASS" starttime="20190531 11:03:13.513" endtime="20190531 11:03:13.975" critical="yes"></status>
+</test>
+<test id="s1-t6" name="To retrive a proposal with wrong prod proposalid">
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:13.979" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:13.978" endtime="20190531 11:03:13.979"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:13.979" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:13.979" endtime="20190531 11:03:13.980"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:13.977" endtime="20190531 11:03:13.980"></status>
+</kw>
+<kw name="Api call for retriving individual proposal with wrong data">
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>governance</arg>
+<arg>/proposals/12367-046384</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20190531 11:03:14.090" level="INFO">Get Request using : alias=governance, uri=/proposals/12367-046384, headers=None json=None</msg>
+<msg timestamp="20190531 11:03:14.090" level="INFO">${result} = &lt;Response [404]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:13.981" endtime="20190531 11:03:14.090"></status>
+</kw>
+<msg timestamp="20190531 11:03:14.091" level="INFO">${result} = &lt;Response [404]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:13.980" endtime="20190531 11:03:14.091"></status>
+</kw>
+<kw name="Checking response for retriving individual proposal with wrong data">
+<arguments>
+<arg>${result}</arg>
+</arguments>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["error"]} == ${true}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.092" endtime="20190531 11:03:14.094"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.092" endtime="20190531 11:03:14.094"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["code"]} == ${404}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.095" endtime="20190531 11:03:14.096"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.094" endtime="20190531 11:03:14.096"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["type"]}" == "Not Found"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.097" endtime="20190531 11:03:14.099"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.096" endtime="20190531 11:03:14.099"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["message"]}" == "Resource not found"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.100" endtime="20190531 11:03:14.101"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.099" endtime="20190531 11:03:14.101"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["keyword"]}" == "proposal-not-found"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${404}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.103" endtime="20190531 11:03:14.104"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.101" endtime="20190531 11:03:14.104"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.091" endtime="20190531 11:03:14.104"></status>
+</kw>
+<tags>
+<tag>Negetive</tag>
+</tags>
+<status status="PASS" starttime="20190531 11:03:13.975" endtime="20190531 11:03:14.104" critical="yes"></status>
+</test>
+<test id="s1-t7" name="To obtain address nonce">
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:14.108" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:14.107" endtime="20190531 11:03:14.108"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:14.108" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:14.108" endtime="20190531 11:03:14.109"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.107" endtime="20190531 11:03:14.109"></status>
+</kw>
+<kw name="Get Address">
+<assign>
+<var>${address}</var>
+</assign>
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:14.112" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:14.111" endtime="20190531 11:03:14.112"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:14.113" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:14.112" endtime="20190531 11:03:14.113"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.110" endtime="20190531 11:03:14.113"></status>
+</kw>
+<kw name="Get Input Data">
+<arguments>
+<arg>vote.json</arg>
+</arguments>
+<assign>
+<var>${address}</var>
+</assign>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the results.</doc>
+<arguments>
+<arg>json.load(open("${file}", "r"))</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${object}</var>
+</assign>
+<msg timestamp="20190531 11:03:14.122" level="INFO">${object} = {'proposalId': 'a0f8faf2-ec58-4e97-74d4-461616af62a6', 'choiceId': 'ff9eb71a-068a-4c3a-1743-8bc2c1d68e26', 'address': '0x880aBa1911749C24189Dc72B238B20E9AD8E36E3', 'nonce': 1, 'signedMessage': '0x2239...</msg>
+<status status="PASS" starttime="20190531 11:03:14.114" endtime="20190531 11:03:14.122"></status>
+</kw>
+<msg timestamp="20190531 11:03:14.123" level="INFO">${address} = {'proposalId': 'a0f8faf2-ec58-4e97-74d4-461616af62a6', 'choiceId': 'ff9eb71a-068a-4c3a-1743-8bc2c1d68e26', 'address': '0x880aBa1911749C24189Dc72B238B20E9AD8E36E3', 'nonce': 1, 'signedMessage': '0x2239...</msg>
+<status status="PASS" starttime="20190531 11:03:14.114" endtime="20190531 11:03:14.123"></status>
+</kw>
+<msg timestamp="20190531 11:03:14.123" level="INFO">${address} = {'proposalId': 'a0f8faf2-ec58-4e97-74d4-461616af62a6', 'choiceId': 'ff9eb71a-068a-4c3a-1743-8bc2c1d68e26', 'address': '0x880aBa1911749C24189Dc72B238B20E9AD8E36E3', 'nonce': 1, 'signedMessage': '0x2239...</msg>
+<status status="PASS" starttime="20190531 11:03:14.109" endtime="20190531 11:03:14.123"></status>
+</kw>
+<kw name="Api call to obtain address nonce">
+<arguments>
+<arg>${address}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>governance</arg>
+<arg>/nonce/${address["address"]}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20190531 11:03:14.226" level="INFO">Get Request using : alias=governance, uri=/nonce/0x880aBa1911749C24189Dc72B238B20E9AD8E36E3, headers=None json=None</msg>
+<msg timestamp="20190531 11:03:14.226" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:14.124" endtime="20190531 11:03:14.226"></status>
+</kw>
+<msg timestamp="20190531 11:03:14.227" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:14.123" endtime="20190531 11:03:14.227"></status>
+</kw>
+<kw name="Checking response for api call to obtain address nonce">
+<arguments>
+<arg>${result}</arg>
+</arguments>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["error"]} == ${false}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.230" endtime="20190531 11:03:14.231"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.228" endtime="20190531 11:03:14.231"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["code"]} == ${200}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.232" endtime="20190531 11:03:14.233"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.232" endtime="20190531 11:03:14.233"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["type"]}" == "OK"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.234" endtime="20190531 11:03:14.236"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.234" endtime="20190531 11:03:14.236"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["message"]}" == "Success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.237" endtime="20190531 11:03:14.238"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.236" endtime="20190531 11:03:14.238"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["keyword"]}" == "nonce-fetch-success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.239" endtime="20190531 11:03:14.240"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.238" endtime="20190531 11:03:14.240"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.227" endtime="20190531 11:03:14.241"></status>
+</kw>
+<tags>
+<tag>Positive</tag>
+</tags>
+<status status="PASS" starttime="20190531 11:03:14.105" endtime="20190531 11:03:14.241" critical="yes"></status>
+</test>
+<test id="s1-t8" name="To retrive governance version">
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:14.246" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:14.244" endtime="20190531 11:03:14.246"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:14.247" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:14.247" endtime="20190531 11:03:14.248"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.243" endtime="20190531 11:03:14.248"></status>
+</kw>
+<kw name="Api call to retrive governance address">
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>governance</arg>
+<arg>/version</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20190531 11:03:14.259" level="INFO">Get Request using : alias=governance, uri=/version, headers=None json=None</msg>
+<msg timestamp="20190531 11:03:14.260" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:14.249" endtime="20190531 11:03:14.260"></status>
+</kw>
+<msg timestamp="20190531 11:03:14.260" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:14.248" endtime="20190531 11:03:14.260"></status>
+</kw>
+<kw name="Checking response to retrive governance version">
+<arguments>
+<arg>${result}</arg>
+</arguments>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["error"]} == ${false}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.263" endtime="20190531 11:03:14.264"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.261" endtime="20190531 11:03:14.264"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["code"]} == ${200}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.265" endtime="20190531 11:03:14.266"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.264" endtime="20190531 11:03:14.266"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["type"]}" == "OK"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.268" endtime="20190531 11:03:14.269"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.267" endtime="20190531 11:03:14.269"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["message"]}" == "successfully retrived current version"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.271" endtime="20190531 11:03:14.272"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.269" endtime="20190531 11:03:14.272"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["keyword"]}" == "version-fetch-success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.273" endtime="20190531 11:03:14.273"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.272" endtime="20190531 11:03:14.273"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.260" endtime="20190531 11:03:14.274"></status>
+</kw>
+<tags>
+<tag>Positive</tag>
+</tags>
+<status status="PASS" starttime="20190531 11:03:14.242" endtime="20190531 11:03:14.274" critical="yes"></status>
+</test>
+<test id="s1-t9" name="To retrive governance default version">
+<kw name="Session Creation">
+<kw name="Create Dictionary" library="BuiltIn">
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<arguments>
+<arg>Content-Type=application/json</arg>
+<arg>token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg</arg>
+</arguments>
+<assign>
+<var>&amp;{headers}</var>
+</assign>
+<msg timestamp="20190531 11:03:14.278" level="INFO">&amp;{headers} = { Content-Type=application/json | token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKW...</msg>
+<status status="PASS" starttime="20190531 11:03:14.277" endtime="20190531 11:03:14.278"></status>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<doc>Create Session: create a HTTP session to a server</doc>
+<arguments>
+<arg>governance</arg>
+<arg>${url}</arg>
+<arg>headers=${headers}</arg>
+</arguments>
+<msg timestamp="20190531 11:03:14.279" level="INFO">Creating Session using : alias=governance, url=http://sukugovernance:3000, headers={'Content-Type': 'application/json', 'token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOm51bGwsInR5cGUiOiJqd3QyIiwiaWF0IjoxNTU0NDc4MTIzLCJleHAiOjE1NTcwNzAxMjN9.gQj85QIl3GxPlYJ2FXngFJikiF4Zru8NrLrKKWV07R37blWRR_wM7otpYelu3MYAcirL62xqbfPBonMOQi5qB4dk7ZOw0ElDaw0DQJG09drPZG1PlocpLZbUxW_dI-OUnbDOUkLgKkFRk-6fYGoZ0pxAMjBMEOejJt1o5RDLHkCSHZrkTMS9H3O8SNrxdBALR6_bFV25gKudv3gZ8rc2WKFE3ZxvfR7rWYCi0XPlM49dhUvIcG5acTyJEcVhFk0wh6mgzNiCYBN9AY7kfGDegEjGp95eOYRPk33MfVxwb8Wry5pgjOXaIbsBVT0ea5hoxyFY9GZQfgU73CDbg6aZJg'},                     cookies=None, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20190531 11:03:14.278" endtime="20190531 11:03:14.279"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.276" endtime="20190531 11:03:14.280"></status>
+</kw>
+<kw name="Api call to fetch default version">
+<assign>
+<var>${result}</var>
+</assign>
+<kw name="Get Request" library="RequestsLibrary">
+<doc>Send a GET request on the session object found using the
+given `alias`</doc>
+<arguments>
+<arg>governance</arg>
+<arg>/</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20190531 11:03:14.299" level="INFO">Get Request using : alias=governance, uri=/, headers=None json=None</msg>
+<msg timestamp="20190531 11:03:14.300" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:14.280" endtime="20190531 11:03:14.300"></status>
+</kw>
+<msg timestamp="20190531 11:03:14.300" level="INFO">${result} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20190531 11:03:14.280" endtime="20190531 11:03:14.300"></status>
+</kw>
+<kw name="Checking response to fetch default version">
+<arguments>
+<arg>${result}</arg>
+</arguments>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["error"]} == ${false}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.302" endtime="20190531 11:03:14.303"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.301" endtime="20190531 11:03:14.304"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result.json()["status"]["code"]} == ${200}</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.305" endtime="20190531 11:03:14.307"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.304" endtime="20190531 11:03:14.308"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["type"]}" == "OK"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.310" endtime="20190531 11:03:14.312"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.309" endtime="20190531 11:03:14.312"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["message"]}" == "This is the default route."</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.314" endtime="20190531 11:03:14.314"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.312" endtime="20190531 11:03:14.315"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>"${result.json()["status"]["keyword"]}" == "version-fetch-success"</arg>
+<arg>Should Be Equal</arg>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${result.status_code}</arg>
+<arg>${200}</arg>
+</arguments>
+<status status="PASS" starttime="20190531 11:03:14.317" endtime="20190531 11:03:14.317"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.316" endtime="20190531 11:03:14.318"></status>
+</kw>
+<status status="PASS" starttime="20190531 11:03:14.301" endtime="20190531 11:03:14.318"></status>
+</kw>
+<tags>
+<tag>Positive</tag>
+</tags>
+<status status="PASS" starttime="20190531 11:03:14.275" endtime="20190531 11:03:14.318" critical="yes"></status>
+</test>
+<status status="PASS" starttime="20190531 11:03:01.964" endtime="20190531 11:03:14.320"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="9" fail="0">Critical Tests</stat>
+<stat pass="9" fail="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="2" fail="0">Negetive</stat>
+<stat pass="6" fail="0">Positive</stat>
+</tag>
+<suite>
+<stat pass="9" fail="0" id="s1" name="Governance">Governance</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

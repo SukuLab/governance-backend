@@ -1,0 +1,489 @@
+openapi: 3.0.1
+info:
+ title: Suku Governance
+ description: Swagger Suku Governance service
+ version: '2.0'
+servers:
+ - url: 'https://emery.suku.network/api/governance'
+components:
+ securitySchemes:
+  ApiKeyAuth:
+   type: apiKey
+   in: header
+   name: token
+security:
+ - ApiKeyAuth: []
+paths:
+ /proposals/{proposalId}:
+  get:
+   description: An API to retrive a proposal using the proposal identity
+   security:
+    - ApiKeyAuth: []
+   tags:
+    - Proposal
+   parameters:
+    - name: proposalId
+      in: path
+      schema:
+        type: string
+      required: true  
+   responses:
+    '200':
+     description: Successful response
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: false
+           code:
+            type: number
+            example: 200
+           type:
+            type: string
+            example: OK
+           message:
+            type: string
+            example: OK
+         data:
+          type: object
+          example: 
+    '400':
+     description: bad request
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 400
+           type:
+            type: string
+            example: Bad Request
+           message:
+            type: string
+            example: Provided request input is not valid
+         data:
+          type: object
+    '401':
+     description: unauthorized
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 401
+           type:
+            type: string
+            example: Unauthorized
+           message:
+            type: string
+            example: Authentication failed
+         data:
+          type: object
+ /proposals:
+  get:
+   description: An API to retrive all proposals. proposals can be filtered and limited using status and limit query paramteres respectively. API defaults to retrival of 5 latest unexpired proposals
+   security:
+    - ApiKeyAuth: []
+   tags:
+    - Proposal
+   parameters:
+    - name: status
+      in: query
+      schema:
+        type: string
+      required: false
+    - name: limit
+      in: query
+      schema:
+        type: string
+      required: false  
+   responses:
+    '200':
+     description: Successful response
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: false
+           code:
+            type: number
+            example: 200
+           type:
+            type: string
+            example: OK
+           message:
+            type: string
+            example: OK
+         data:
+          type: object
+          example: 
+    '400':
+     description: bad request
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 400
+           type:
+            type: string
+            example: Bad Request
+           message:
+            type: string
+            example: Provided request input is not valid
+         data:
+          type: object
+    '401':
+     description: unauthorized
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 401
+           type:
+            type: string
+            example: Unauthorized
+           message:
+            type: string
+            example: Authentication failed
+         data:
+          type: object        
+  post:
+   description: This API is used to create new proposal
+   security:
+    - ApiKeyAuth: []
+   tags:
+    - Proposal
+   requestBody:
+    content:
+     application/json:
+      schema:
+       type: object
+       properties:
+        proposalName:
+         type: string
+        proposalDescription:
+         type: string
+        proposalBlockExpiration:
+         type: integer
+        sukuReward:
+         type: string
+        choices:
+         type: array
+         items:
+           type: object
+           properties:
+             name:
+              type: string
+             description:
+              type: string
+   responses:
+    '200':
+     description: Successful response
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: false
+           code:
+            type: number
+            example: 200
+           type:
+            type: string
+            example: OK
+           message:
+            type: string
+            example: OK
+         data:
+          type: object
+    '400':
+     description: bad request
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 400
+           type:
+            type: string
+            example: Bad Request
+           message:
+            type: string
+            example: Provided request input is not valid
+         data:
+          type: object
+    '401':
+     description: unauthorized
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 401
+           type:
+            type: string
+            example: Unauthorized
+           message:
+            type: string
+            example: Authentication failed
+         data:
+          type: object
+ /nonce:
+  get:
+   description: An API to retrive Address Nonce
+   security:
+    - ApiKeyAuth: []
+   tags:
+    - Address Nonce
+   parameters:
+    - name: ethereumAddress
+      in: path
+      schema:
+        type: string
+      required: true    
+   responses:
+    '200':
+     description: Successful response
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: false
+           code:
+            type: number
+            example: 200
+           type:
+            type: string
+            example: OK
+           message:
+            type: string
+            example: OK
+         data:
+          type: object
+          example: {
+            "nonce": 121
+          }
+    '400':
+     description: bad request
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 400
+           type:
+            type: string
+            example: Bad Request
+           message:
+            type: string
+            example: Provided request input is not valid
+         data:
+          type: object
+    '401':
+     description: unauthorized
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 401
+           type:
+            type: string
+            example: Unauthorized
+           message:
+            type: string
+            example: Authentication failed
+         data:
+          type: object
+ /proposals/{proposalId}/votes:
+  post:
+   description: This API is used to cast a vote
+   security:
+    - ApiKeyAuth: []
+   tags:
+    - Proposal
+   parameters:
+    - name: proposalId
+      in: path
+      schema:
+        type: string
+      required: true 
+   requestBody:
+    content:
+     application/json:
+      schema:
+       type: object
+       properties:
+         choiceId:
+           type: string
+         address:
+           type: string
+         nonce:
+           type: integer
+         proposalId:
+           type: string
+         signedMessage:
+           type: string
+   responses:
+    '200':
+     description: Successful response
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: false
+           code:
+            type: number
+            example: 200
+           type:
+            type: string
+            example: OK
+           message:
+            type: string
+            example: OK
+         data:
+          type: object
+    '400':
+     description: bad request
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 400
+           type:
+            type: string
+            example: Bad Request
+           message:
+            type: string
+            example: Provided request input is not valid
+         data:
+          type: object
+    '401':
+     description: unauthorized
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: object
+          properties:
+           error:
+            type: boolean
+            example: true
+           code:
+            type: number
+            example: 401
+           type:
+            type: string
+            example: Unauthorized
+           message:
+            type: string
+            example: Authentication failed
+         data:
+          type: object
+   

@@ -1,0 +1,19 @@
+{
+  "status": {
+    "error": false,
+    "code": 200,
+    "type": "Success",
+    "message": "JWT Verified successfully"
+  },
+  "data": {
+    "status": true,
+    "data": {
+      "authId": 399,
+      "userId": 285,
+      "type": "jwt2",
+      "iat": 1554479350,
+      "exp": 1557071350
+    }
+  }
+}
+

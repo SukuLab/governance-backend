@@ -1,0 +1,12 @@
+{
+   "status": {
+       "error": false,
+       "code": 200,
+       "type": "Success",
+       "message": "JWT Token Generated Successfully"
+   },
+   "data": {
+       "jwt": "jwt"
+   }
+}
+

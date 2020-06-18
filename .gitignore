@@ -1,0 +1,8 @@
+node_modules
+dist
+src/log
+dev-env.sh
+dev-env.cmd
+package-lock.json
+.nyc_output
+coverage

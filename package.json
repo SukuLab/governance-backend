@@ -1,0 +1,46 @@
+{
+  "name": "suku-governance",
+  "version": "1.0.0",
+  "description": "Suku-Governance for voting",
+  "main": "src/server.js",
+  "scripts": {
+    "build": "babel src --presets env --out-dir dist",
+    "dev": "babel-node --presets env src/server.js",
+    "start": "node --require babel-polyfill dist/server.js",
+    "serve": "nodemon --exec npm run dev",
+    "test": "nyc mocha --require babel-polyfill --compilers js:babel-core/register testing/unit",
+    "coverage": "nyc --all --reporter=lcov --reporter=text-lcov npm test"
+  },
+  "author": "comorin",
+  "license": "ISC",
+  "dependencies": {
+    "@suku/suku-governance-eth-lib": "^1.0.0",
+    "@suku/suku-logging": "^1.0.2",
+    "@suku/utils": "^1.0.1",
+    "app-root-path": "^2.2.1",
+    "asleep": "^1.0.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "eslint": "^5.12.0",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.1.5",
+    "express-mung": "^0.5.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
+    "nyc": "^13.1.0",
+    "path": "^0.12.7",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "mocha": "^5.2.0"
+  }
+}

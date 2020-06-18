@@ -1,0 +1,168 @@
+{
+    "proposalName": "Proposal ARC-12000",
+    "proposalDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "proposalBlockExpiration": 5785800,
+    "sukuReward": 5785800,
+    "choices": [
+        {
+            "name": "Test Choice 1 999",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "img": "5d00cf889ac5832663bbc1c9",
+            "team": [
+                {
+                    "name": "Suku team A",
+                    "title": "suku choice 101 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Test Choice 999",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "img": "5d00cf889ac5832663bbc1c9",
+            "team": [
+                {
+                    "name": "Suku team B",
+                    "title": "suku choice 102 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Test Choice 3 999",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "img": "5d00cf889ac5832663bbc1c9",
+            "team": [
+                {
+                    "name": "Suku team C",
+                    "title": "suku choice 999 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                },
+                {
+                    "name": "Suku team C",
+                    "title": "suku choice 999 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                },
+                {
+                    "name": "Suku team C",
+                    "title": "suku choice 999 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                },
+                {
+                    "name": "Suku team C",
+                    "title": "suku choice 999 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Test Choice 3 999",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "img": "5d00cf889ac5832663bbc1c9",
+            "team": [
+                {
+                    "name": "Suku team C",
+                    "title": "suku choice 999 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                },
+                {
+                    "name": "Suku team C",
+                    "title": "suku choice 999 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                },
+                {
+                    "name": "Suku team C",
+                    "title": "suku choice 999 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                },
+                {
+                    "name": "Suku team C",
+                    "title": "suku choice 999 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                },
+                {
+                    "name": "Suku team C",
+                    "title": "suku choice 999 team",
+                    "img": "5d00cf3f9ac5832663bbc1c7",
+                    "links": {
+                        "linkedin": "https://www.linkedin.com/company/citizens-reserve/",
+                        "telegram": "telegram",
+                        "slack": "slack",
+                        "github": "github",
+                        "twitter": "https://twitter.com/SUKUecosystem"
+                    }
+                }
+            ]
+        }
+    ]
+}
