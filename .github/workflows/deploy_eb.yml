@@ -1,0 +1,46 @@
+
+name: Build and Deploy to EB
+
+on:
+  push:
+      branches:
+        - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+        registry-url: https://registry.npmjs.org/
+
+    - name: npm install, build
+      run: |
+        npm i
+        npm run build
+      env:
+        CI: true
+
+    - name: Generate deployment package
+      run: zip -r deploy.zip .
+
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v4
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: governance-backend
+        environment_name: governance-backend-dev
+        version_label: ${{github.sha}}
+        region: us-east-1
+        deployment_package: deploy.zip
